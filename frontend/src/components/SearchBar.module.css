@@ -1,0 +1,30 @@
+.container {
+  margin-bottom: 0;
+}
+
+.searchInput {
+  width: 100%;
+  max-width: 350px;
+  padding: 14px 20px;
+  padding-left: 48px;
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  border: 1px solid #2a2a35;
+  border-radius: 12px;
+  outline: none;
+  transition: all 0.3s ease;
+  background-color: #16161f;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 16px center;
+  color: #ffffff;
+}
+
+.searchInput:focus {
+  border-color: #a3e635;
+  box-shadow: 0 0 0 3px rgba(163, 230, 53, 0.1);
+}
+
+.searchInput::placeholder {
+  color: #52525b;
+}

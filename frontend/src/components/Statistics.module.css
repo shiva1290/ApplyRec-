@@ -1,0 +1,98 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.statCard {
+  background: #16161f;
+  padding: 24px;
+  border-radius: 16px;
+  text-align: center;
+  border: 1px solid #2a2a35;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.statCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #2a2a35;
+}
+
+.statCard:hover {
+  transform: translateY(-4px);
+  border-color: #3a3a45;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.statValue {
+  font-size: 36px;
+  font-weight: 700;
+  color: #ffffff;
+  font-family: 'DM Sans', sans-serif;
+  margin-bottom: 8px;
+}
+
+.statLabel {
+  font-size: 12px;
+  color: #71717a;
+  font-family: 'DM Sans', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.statCard.applied::before {
+  background: linear-gradient(90deg, #60a5fa 0%, #3b82f6 100%);
+}
+
+.statCard.applied .statValue {
+  color: #60a5fa;
+}
+
+.statCard.oa::before {
+  background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%);
+}
+
+.statCard.oa .statValue {
+  color: #fbbf24;
+}
+
+.statCard.interview::before {
+  background: linear-gradient(90deg, #a78bfa 0%, #8b5cf6 100%);
+}
+
+.statCard.interview .statValue {
+  color: #a78bfa;
+}
+
+.statCard.rejected::before {
+  background: linear-gradient(90deg, #f87171 0%, #ef4444 100%);
+}
+
+.statCard.rejected .statValue {
+  color: #f87171;
+}
+
+.statCard.offer::before {
+  background: linear-gradient(90deg, #34d399 0%, #10b981 100%);
+}
+
+.statCard.offer .statValue {
+  color: #34d399;
+}
+
+.statCard.followUp::before {
+  background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%);
+}
+
+.statCard.followUp .statValue {
+  color: #fbbf24;
+}

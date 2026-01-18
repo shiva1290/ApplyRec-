@@ -1,0 +1,78 @@
+.board {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 20px 0;
+  min-height: 600px;
+}
+
+.column {
+  min-width: 320px;
+  max-width: 320px;
+  background: #12121a;
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid #2a2a35;
+  transition: all 0.3s ease;
+}
+
+.column.dragOver {
+  background: rgba(163, 230, 53, 0.05);
+  border: 2px dashed #a3e635;
+}
+
+.columnHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  margin-bottom: 16px;
+  border-top: 3px solid;
+  border-radius: 4px 4px 0 0;
+}
+
+.columnTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  font-family: 'DM Sans', sans-serif;
+  margin: 0;
+}
+
+.columnCount {
+  background: #16161f;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #a1a1aa;
+  font-family: 'DM Sans', sans-serif;
+  border: 1px solid #2a2a35;
+}
+
+.columnContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 400px;
+}
+
+.draggableCard {
+  cursor: grab;
+  transition: transform 0.2s ease;
+}
+
+.draggableCard:active {
+  cursor: grabbing;
+  transform: rotate(2deg) scale(1.02);
+}
+
+.emptyColumn {
+  padding: 40px 20px;
+  text-align: center;
+  color: #52525b;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  border: 2px dashed #2a2a35;
+  border-radius: 12px;
+}

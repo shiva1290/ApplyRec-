@@ -1,0 +1,149 @@
+.card {
+  background: #16161f;
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid #2a2a35;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #a3e635 0%, #84cc16 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card:hover {
+  border-color: #3a3a45;
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.company {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  font-family: 'DM Sans', sans-serif;
+  margin: 0;
+}
+
+.status {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status.applied {
+  background: rgba(96, 165, 250, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(96, 165, 250, 0.3);
+}
+
+.status.oa {
+  background: rgba(251, 191, 36, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.status.interview {
+  background: rgba(167, 139, 250, 0.15);
+  color: #a78bfa;
+  border: 1px solid rgba(167, 139, 250, 0.3);
+}
+
+.status.rejected {
+  background: rgba(248, 113, 113, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.3);
+}
+
+.status.offer {
+  background: rgba(52, 211, 153, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(52, 211, 153, 0.3);
+}
+
+.status.default {
+  background: rgba(161, 161, 170, 0.15);
+  color: #a1a1aa;
+  border: 1px solid rgba(161, 161, 170, 0.3);
+}
+
+.role {
+  font-size: 15px;
+  color: #a1a1aa;
+  font-family: 'DM Sans', sans-serif;
+  margin: 0 0 8px 0;
+}
+
+.date {
+  font-size: 13px;
+  color: #71717a;
+  font-family: 'DM Sans', sans-serif;
+  margin: 0 0 12px 0;
+}
+
+.notes {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: #12121a;
+  border-radius: 10px;
+  border-left: 3px solid #a3e635;
+}
+
+.notesText {
+  font-size: 13px;
+  color: #a1a1aa;
+  font-family: 'DM Sans', sans-serif;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.followUpBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: rgba(251, 191, 36, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  margin-top: 12px;
+}
+
+.followUpCard {
+  border-left: 3px solid #fbbf24;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #2a2a35;
+}
