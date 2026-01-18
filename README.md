@@ -174,11 +174,25 @@ Drag-and-drop board for status management
 
 ## Deployment
 
-### Frontend (Vercel)
-The frontend is deployed on Vercel.
+### Live URLs
+| Service | Platform | URL |
+|---------|----------|-----|
+| Frontend | Vercel | https://applyrec.vercel.app |
+| Backend | Railway | https://applyrec-production.up.railway.app |
+| Database | Railway MySQL | Internal |
 
-### Backend
-Deploy to any Node.js hosting (Railway, Render, Heroku)
+### Frontend (Vercel)
+1. Connect GitHub repository to Vercel
+2. Set root directory to `frontend`
+3. Add environment variable: `REACT_APP_API_URL`
+4. Deploy
+
+### Backend (Railway)
+1. Connect GitHub repository to Railway
+2. Set root directory to `backend`
+3. Add MySQL database
+4. Set environment variables (MYSQLHOST, MYSQLUSER, etc.)
+5. Deploy
 
 ## Author
 
