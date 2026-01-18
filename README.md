@@ -2,7 +2,9 @@
 
 A full-stack web application to track and manage job applications throughout your placement journey.
 
-**Live Demo:** [Coming Soon]
+**Live Demo:** [https://applyrec.vercel.app](https://applyrec.vercel.app)
+
+**Backend API:** [https://applyrec-production.up.railway.app](https://applyrec-production.up.railway.app)
 
 ## Features
 
