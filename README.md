@@ -1,204 +1,131 @@
 # ApplyRec - Job Application Tracker
 
-A full-stack web application to track and manage job applications throughout your placement journey.
+A full-stack web application to track and manage job applications. Built with React, Node.js, Express, and MySQL.
 
-**Live Demo:** [https://applyrec.vercel.app](https://applyrec.vercel.app)
+**Live Demo:** https://applyrec.vercel.app
 
-**Backend API:** [https://applyrec-production.up.railway.app](https://applyrec-production.up.railway.app)
+## Preview
+
+### Landing Page
+Modern dark-themed landing page with feature showcase and call-to-action.
+
+### Dashboard
+Track all your applications with statistics, search, filter, and sort functionality.
+
+### Kanban Board
+Drag-and-drop interface to move applications between status columns.
 
 ## Features
 
-- **User Authentication** - Secure signup/login with JWT tokens
-- **Application Tracking** - Add, edit, delete job applications
-- **Status Management** - Track applications through stages (Applied, OA, Interview, Rejected, Offer)
-- **Kanban Board** - Drag-and-drop interface to update application status
-- **Search & Filter** - Find applications by company name or filter by status
-- **Statistics Dashboard** - Visual overview of your application progress
-- **Notes & Follow-ups** - Add notes and mark applications for follow-up
-- **Dark Theme** - Modern, eye-friendly dark interface
+| Feature | Description |
+|---------|-------------|
+| User Authentication | Secure signup/login with JWT tokens and bcrypt password hashing |
+| Application CRUD | Create, read, update, delete job applications |
+| Status Tracking | Track progress: Applied, OA, Interview, Rejected, Offer |
+| Kanban Board | Drag-and-drop to change application status |
+| Search | Find applications by company name |
+| Filter | Filter applications by status |
+| Sort | Sort by date or company name |
+| Statistics | Visual dashboard showing application counts by status |
+| Notes | Add notes to each application |
+| Follow-up Flags | Mark applications requiring follow-up |
+| Dark Theme | Modern, professional dark UI |
 
 ## Tech Stack
 
-### Frontend
-- React.js (Functional Components)
+**Frontend**
+- React.js (Functional Components, Hooks)
 - React Router DOM
 - CSS Modules
 - HTML5 Drag and Drop API
 
-### Backend
+**Backend**
 - Node.js
 - Express.js
 - MySQL
 - JWT Authentication
 - bcrypt Password Hashing
 
-## Project Structure
+**Deployment**
+- Frontend: Vercel
+- Backend: Railway
+- Database: Railway MySQL
+
+## Architecture
+
+```
+Frontend (React)          Backend (Express)         Database (MySQL)
+     |                          |                        |
+     |    REST API Calls        |     SQL Queries        |
+     | -----------------------> | ---------------------> |
+     | <----------------------- | <--------------------- |
+     |    JSON Responses        |     Query Results      |
+```
+
+### Project Structure
 
 ```
 ApplyRec/
 ├── backend/
 │   ├── config/          # Database configuration
 │   ├── controllers/     # Request handlers
-│   ├── middleware/      # Auth middleware
+│   ├── middleware/      # JWT authentication
 │   ├── models/          # Database queries
-│   ├── routes/          # API routes
+│   ├── routes/          # API endpoints
 │   ├── services/        # Business logic
-│   └── server.js        # Entry point
-├── frontend/
-│   ├── public/          # Static files
-│   └── src/
-│       ├── components/  # Reusable UI components
-│       ├── pages/       # Page components
-│       ├── services/    # API calls
-│       └── styles/      # Global styles
-└── README.md
+│   └── server.js
+└── frontend/
+    └── src/
+        ├── components/  # Reusable UI components
+        ├── pages/       # Page components
+        ├── services/    # API client
+        └── styles/      # Global CSS
 ```
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js (v14+)
-- MySQL (v8+)
-- npm or yarn
-
-### Database Setup
-
-1. Start MySQL server
-2. Run the schema file:
-```bash
-mysql -u root -p < backend/database/schema.sql
-```
-
-3. Run migrations:
-```bash
-mysql -u root -p < backend/database/migrations/add_notes_followup.sql
-```
-
-### Backend Setup
-
-1. Navigate to backend:
-```bash
-cd backend
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Create `.env` file:
-```env
-PORT=5000
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=your_password
-DB_NAME=applyrec
-JWT_SECRET=your_jwt_secret_key
-```
-
-4. Generate JWT secret:
-```bash
-node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
-```
-
-5. Start server:
-```bash
-npm run dev
-```
-
-### Frontend Setup
-
-1. Navigate to frontend:
-```bash
-cd frontend
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Start development server:
-```bash
-npm start
-```
-
-4. Open http://localhost:3000
 
 ## API Endpoints
 
-### Authentication
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/api/auth/signup` | Register new user |
-| POST | `/api/auth/login` | Login user |
+| POST | /api/auth/signup | Register new user |
+| POST | /api/auth/login | Authenticate user |
+| GET | /api/applications | Get user's applications |
+| POST | /api/applications | Create new application |
+| PUT | /api/applications/:id | Update application |
+| PATCH | /api/applications/:id/status | Update status (drag-drop) |
+| DELETE | /api/applications/:id | Delete application |
 
-### Applications (Protected)
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/applications` | Get all applications |
-| GET | `/api/applications?status=Applied` | Filter by status |
-| POST | `/api/applications` | Create application |
-| PUT | `/api/applications/:id` | Update application |
-| PATCH | `/api/applications/:id/status` | Update status only |
-| DELETE | `/api/applications/:id` | Delete application |
+## Key Implementation Highlights
 
-## Screenshots
+**Authentication Flow**
+- Password hashing with bcrypt (10 salt rounds)
+- JWT tokens with 7-day expiry
+- Protected routes with middleware
+- Secure token storage in localStorage
 
-### Landing Page
-Dark themed landing page with feature showcase
+**Database Design**
+- Normalized schema (3NF)
+- Foreign key relationships
+- ENUM for status validation
+- Indexed queries for performance
 
-### Dashboard
-Grid view with statistics and application cards
+**Frontend Architecture**
+- Functional components with hooks
+- Separation of UI and API logic
+- CSS Modules for scoped styling
+- Responsive design
 
-### Kanban Board
-Drag-and-drop board for status management
+**Drag and Drop**
+- Native HTML5 Drag and Drop API
+- No external libraries
+- Real-time status updates via API
 
-## Environment Variables
+## Live Demo
 
-### Backend
-| Variable | Description |
-|----------|-------------|
-| PORT | Server port (default: 5000) |
-| DB_HOST | MySQL host |
-| DB_USER | MySQL username |
-| DB_PASSWORD | MySQL password |
-| DB_NAME | Database name |
-| JWT_SECRET | Secret key for JWT |
+**URL:** https://applyrec.vercel.app
 
-### Frontend
-| Variable | Description |
-|----------|-------------|
-| REACT_APP_API_URL | Backend API URL |
+**Test Account:**
+- Email: test@applyrec.com
+- Password: test123
 
-## Deployment
+Or create your own account to try all features.
 
-### Live URLs
-| Service | Platform | URL |
-|---------|----------|-----|
-| Frontend | Vercel | https://applyrec.vercel.app |
-| Backend | Railway | https://applyrec-production.up.railway.app |
-| Database | Railway MySQL | Internal |
-
-### Frontend (Vercel)
-1. Connect GitHub repository to Vercel
-2. Set root directory to `frontend`
-3. Add environment variable: `REACT_APP_API_URL`
-4. Deploy
-
-### Backend (Railway)
-1. Connect GitHub repository to Railway
-2. Set root directory to `backend`
-3. Add MySQL database
-4. Set environment variables (MYSQLHOST, MYSQLUSER, etc.)
-5. Deploy
-
-## Author
-
-**Shiva Gupta**
-- GitHub: [@shiva1290](https://github.com/shiva1290)
-
-## License
-
-This project is open source and available under the MIT License.
