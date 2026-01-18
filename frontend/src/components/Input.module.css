@@ -47,3 +47,14 @@
   color: #f87171;
   font-family: 'DM Sans', sans-serif;
 }
+
+@media (max-width: 768px) {
+  .label {
+    font-size: 13px;
+  }
+
+  .input {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+}

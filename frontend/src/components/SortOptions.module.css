@@ -37,3 +37,19 @@
   background-color: #16161f;
   color: #ffffff;
 }
+
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+  }
+
+  .label {
+    font-size: 12px;
+  }
+
+  .select {
+    flex: 1;
+    padding: 10px 36px 10px 12px;
+    font-size: 12px;
+  }
+}

@@ -30,3 +30,30 @@
   border-color: #a3e635;
   color: #0a0a0f;
 }
+
+@media (max-width: 768px) {
+  .filterBar {
+    gap: 8px;
+    margin-bottom: 16px;
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 8px;
+  }
+
+  .filterBar::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .filterBar::-webkit-scrollbar-thumb {
+    background: #2a2a35;
+    border-radius: 2px;
+  }
+
+  .filterButton {
+    padding: 8px 14px;
+    font-size: 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+}

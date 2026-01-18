@@ -53,3 +53,14 @@
   background-color: #12121a;
   color: #ffffff;
 }
+
+@media (max-width: 768px) {
+  .label {
+    font-size: 13px;
+  }
+
+  .select {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+}

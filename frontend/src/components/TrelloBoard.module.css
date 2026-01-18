@@ -76,3 +76,42 @@
   border: 2px dashed #2a2a35;
   border-radius: 12px;
 }
+
+@media (max-width: 768px) {
+  .board {
+    flex-direction: column;
+    gap: 16px;
+    min-height: auto;
+    padding: 16px 0;
+  }
+
+  .column {
+    min-width: 100%;
+    max-width: 100%;
+    padding: 12px;
+  }
+
+  .columnHeader {
+    padding: 12px 0;
+    margin-bottom: 12px;
+  }
+
+  .columnTitle {
+    font-size: 14px;
+  }
+
+  .columnCount {
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+
+  .columnContent {
+    min-height: 100px;
+    gap: 12px;
+  }
+
+  .emptyColumn {
+    padding: 24px 16px;
+    font-size: 12px;
+  }
+}

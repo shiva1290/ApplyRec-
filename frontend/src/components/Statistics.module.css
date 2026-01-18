@@ -96,3 +96,43 @@
 .statCard.followUp .statValue {
   color: #fbbf24;
 }
+
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .statCard {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .statValue {
+    font-size: 24px;
+  }
+
+  .statLabel {
+    font-size: 10px;
+    letter-spacing: 0.5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .statCard {
+    padding: 14px;
+  }
+
+  .statValue {
+    font-size: 20px;
+  }
+
+  .statLabel {
+    font-size: 9px;
+  }
+}

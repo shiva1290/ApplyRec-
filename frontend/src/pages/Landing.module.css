@@ -580,3 +580,166 @@
     text-align: center;
   }
 }
+
+@media (max-width: 768px) {
+  .floatingDot {
+    display: none;
+  }
+
+  .nav {
+    padding: 16px;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .navLinks {
+    width: 100%;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .navButton {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  .hero {
+    padding: 40px 16px 60px;
+  }
+
+  .heroTitle {
+    font-size: 32px;
+  }
+
+  .heroSubtitle {
+    font-size: 15px;
+    margin-bottom: 32px;
+  }
+
+  .heroActions {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    width: 100%;
+    text-align: center;
+    padding: 14px 24px;
+  }
+
+  .heroStats {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .heroStatDivider {
+    display: none;
+  }
+
+  .heroStat {
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .heroStatValue {
+    font-size: 24px;
+  }
+
+  .features {
+    padding: 40px 16px;
+  }
+
+  .featuresHeader {
+    margin-bottom: 32px;
+  }
+
+  .featuresTitle {
+    font-size: 24px;
+  }
+
+  .featuresSubtitle {
+    font-size: 14px;
+  }
+
+  .featuresGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .featureCard {
+    padding: 24px;
+  }
+
+  .featureIcon {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+
+  .featureTitle {
+    font-size: 16px;
+  }
+
+  .featureDescription {
+    font-size: 13px;
+  }
+
+  .cta {
+    padding: 40px 16px;
+  }
+
+  .ctaTitle {
+    font-size: 24px;
+  }
+
+  .ctaSubtitle {
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  .ctaButton {
+    width: 100%;
+    padding: 14px 24px;
+    font-size: 14px;
+    display: block;
+  }
+
+  .footer {
+    padding: 24px 16px;
+  }
+
+  .footerLogo {
+    font-size: 16px;
+  }
+
+  .footerText {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav {
+    padding: 12px;
+  }
+
+  .logo {
+    font-size: 18px;
+  }
+
+  .heroTitle {
+    font-size: 28px;
+  }
+
+  .heroSubtitle {
+    font-size: 14px;
+  }
+
+  .featuresTitle {
+    font-size: 22px;
+  }
+
+  .ctaTitle {
+    font-size: 22px;
+  }
+}
