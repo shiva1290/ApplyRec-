@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS applications (
   status ENUM('Applied', 'OA', 'Interview', 'Rejected', 'Offer') NOT NULL,
   status_updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   applied_date DATE NOT NULL,
-  salary INT DEFAULT NULL,
+  salary DECIMAL(6,2) DEFAULT NULL,
   notes TEXT DEFAULT NULL,
   follow_up BOOLEAN DEFAULT FALSE,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,

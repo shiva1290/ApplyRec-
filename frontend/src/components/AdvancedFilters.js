@@ -30,10 +30,11 @@ function AdvancedFilters({
       </div>
 
       <div className={styles.filterGroup}>
-        <label className={styles.label}>Salary Range</label>
+        <label className={styles.label}>Salary Range (LPA)</label>
         <div className={styles.salaryInputs}>
           <input
             type="number"
+            step="0.1"
             className={styles.input}
             placeholder="Min"
             value={minSalary}
@@ -42,6 +43,7 @@ function AdvancedFilters({
           <span className={styles.separator}>-</span>
           <input
             type="number"
+            step="0.1"
             className={styles.input}
             placeholder="Max"
             value={maxSalary}

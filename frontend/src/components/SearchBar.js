@@ -11,6 +11,15 @@ function SearchBar({ searchQuery, onSearchChange }) {
         value={searchQuery}
         onChange={(e) => onSearchChange(e.target.value)}
       />
+      {searchQuery && (
+        <button
+          className={styles.clearButton}
+          onClick={() => onSearchChange('')}
+          type="button"
+        >
+          ×
+        </button>
+      )}
     </div>
   );
 }

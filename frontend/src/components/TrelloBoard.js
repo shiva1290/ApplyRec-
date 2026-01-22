@@ -11,7 +11,7 @@ const STATUS_COLUMNS = [
   { id: 'Offer', label: 'Offer', color: '#065f46' },
 ];
 
-function TrelloBoard({ applications, onEdit, onDelete, onStatusUpdate }) {
+function TrelloBoard({ applications, onEdit, onDelete, onStatusUpdate, onOfferDrop }) {
   const [draggedCard, setDraggedCard] = useState(null);
   const [targetColumn, setTargetColumn] = useState(null);
 
@@ -55,10 +55,20 @@ function TrelloBoard({ applications, onEdit, onDelete, onStatusUpdate }) {
       return;
     }
 
+    const previousStatus = draggedCard.status;
+
+    if (targetStatus === 'Offer') {
+      if (onOfferDrop) {
+        onOfferDrop(draggedCard, previousStatus);
+      }
+      setDraggedCard(null);
+      return;
+    }
+
     try {
       await updateApplicationStatus(draggedCard.id, targetStatus);
       if (onStatusUpdate) {
-        onStatusUpdate();
+        onStatusUpdate(previousStatus, targetStatus);
       }
     } catch (error) {
       console.error('Failed to update status:', error);

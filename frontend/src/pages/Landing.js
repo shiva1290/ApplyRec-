@@ -6,27 +6,27 @@ const FEATURES = [
   {
     icon: '01',
     title: 'Track Applications',
-    description: 'Keep all your job applications organized in one place with status tracking.',
+    description: 'Keep all your job applications organized with Job ID, role, and salary tracking.',
   },
   {
     icon: '02',
-    title: 'Status Management',
-    description: 'Track progress from Applied to Offer with visual status indicators.',
+    title: 'Salary Tracking',
+    description: 'Track expected salary in LPA format. Filter and sort by salary range.',
   },
   {
     icon: '03',
     title: 'Kanban Board',
-    description: 'Drag and drop interface to manage your application pipeline.',
+    description: 'Drag and drop interface to manage your application pipeline visually.',
   },
   {
     icon: '04',
-    title: 'Follow-up Reminders',
-    description: 'Mark applications for follow-up so you never miss an opportunity.',
+    title: 'Smart Role Tags',
+    description: 'Autocomplete suggestions from your existing roles for consistency.',
   },
   {
     icon: '05',
-    title: 'Search & Filter',
-    description: 'Quickly find applications by company name or filter by status.',
+    title: 'Advanced Filters',
+    description: 'Filter by status, role, and salary range. Search by company name.',
   },
   {
     icon: '06',
@@ -115,15 +115,24 @@ function Landing() {
             </div>
             <div className={styles.mockupList}>
               <div className={styles.mockupItem}>
-                <span className={styles.mockupCompany}>Google</span>
+                <div className={styles.mockupItemLeft}>
+                  <span className={styles.mockupCompany}>Google</span>
+                  <span className={styles.mockupSalary}>24 LPA</span>
+                </div>
                 <span className={`${styles.mockupBadge} ${styles.interview}`}>Interview</span>
               </div>
               <div className={styles.mockupItem}>
-                <span className={styles.mockupCompany}>Meta</span>
+                <div className={styles.mockupItemLeft}>
+                  <span className={styles.mockupCompany}>Meta</span>
+                  <span className={styles.mockupSalary}>28 LPA</span>
+                </div>
                 <span className={`${styles.mockupBadge} ${styles.applied}`}>Applied</span>
               </div>
               <div className={styles.mockupItem}>
-                <span className={styles.mockupCompany}>Amazon</span>
+                <div className={styles.mockupItemLeft}>
+                  <span className={styles.mockupCompany}>Amazon</span>
+                  <span className={styles.mockupSalary}>22.5 LPA</span>
+                </div>
                 <span className={`${styles.mockupBadge} ${styles.offer}`}>Offer</span>
               </div>
             </div>

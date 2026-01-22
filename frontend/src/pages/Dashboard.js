@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Dashboard.module.css';
 import Button from '../components/Button';
@@ -10,6 +10,9 @@ import SearchBar from '../components/SearchBar';
 import SortOptions from '../components/SortOptions';
 import TrelloBoard from '../components/TrelloBoard';
 import AdvancedFilters from '../components/AdvancedFilters';
+import Toast from '../components/Toast';
+import OfferModal from '../components/OfferModal';
+import CelebrationModal from '../components/CelebrationModal';
 import {
   getApplications,
   createApplication,
@@ -30,11 +33,22 @@ function Dashboard() {
   const [maxSalary, setMaxSalary] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('newest');
-  const [viewMode, setViewMode] = useState('grid');
+  const [viewMode, setViewMode] = useState('board');
   const [showForm, setShowForm] = useState(false);
   const [editingApplication, setEditingApplication] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [toast, setToast] = useState(null);
+  const [offerModal, setOfferModal] = useState(null);
+  const [celebrationModal, setCelebrationModal] = useState(null);
+
+  const showToast = useCallback((message, type = 'success') => {
+    setToast({ message, type });
+  }, []);
+
+  const hideToast = useCallback(() => {
+    setToast(null);
+  }, []);
 
   useEffect(() => {
     if (!getAuthToken()) {
@@ -48,6 +62,13 @@ function Dashboard() {
   useEffect(() => {
     loadApplications();
   }, [statusFilter, roleFilter, minSalary, maxSalary]);
+
+  useEffect(() => {
+    const hasActiveFilters = searchQuery || statusFilter || roleFilter || minSalary || maxSalary || sortBy !== 'newest';
+    if (hasActiveFilters) {
+      setViewMode('grid');
+    }
+  }, [searchQuery, statusFilter, roleFilter, minSalary, maxSalary, sortBy]);
 
   const loadApplications = async () => {
     try {
@@ -136,7 +157,7 @@ function Dashboard() {
           formData.notes || null,
           formData.followUp || false,
           formData.jobId || null,
-          formData.salary ? parseInt(formData.salary) : null
+          formData.salary ? parseFloat(formData.salary) : null
         );
       } else {
         await createApplication(
@@ -147,7 +168,7 @@ function Dashboard() {
           formData.notes || null,
           formData.followUp || false,
           formData.jobId || null,
-          formData.salary ? parseInt(formData.salary) : null
+          formData.salary ? parseFloat(formData.salary) : null
         );
       }
 
@@ -155,8 +176,10 @@ function Dashboard() {
       setEditingApplication(null);
       await loadApplications();
       await loadRoles();
+      showToast(editingApplication ? 'Application updated!' : 'Application created!');
     } catch (err) {
       setError(err.message || 'Failed to save application');
+      showToast('Failed to save application', 'error');
     } finally {
       setIsLoading(false);
     }
@@ -171,8 +194,10 @@ function Dashboard() {
       setIsLoading(true);
       await deleteApplication(id);
       await loadApplications();
+      showToast('Application deleted');
     } catch (err) {
       setError(err.message || 'Failed to delete application');
+      showToast('Failed to delete application', 'error');
     } finally {
       setIsLoading(false);
     }
@@ -185,24 +210,116 @@ function Dashboard() {
 
   const handleFilterChange = (status) => {
     setStatusFilter(status);
+    if (!status && !searchQuery && !roleFilter && !minSalary && !maxSalary && sortBy === 'newest') {
+      setViewMode('board');
+    }
   };
 
-  const handleStatusUpdate = () => {
+  const getStatusMessage = (fromStatus, toStatus) => {
+    if (toStatus === 'Offer') {
+      return "You did it! Offer received! Time to celebrate!";
+    }
+    if (toStatus === 'Interview') {
+      if (fromStatus === 'Applied') return "Amazing! You got an interview!";
+      if (fromStatus === 'OA') return "Great job on the OA! Interview time!";
+      return "Interview scheduled! You've got this!";
+    }
+    if (toStatus === 'OA') {
+      return "Nice! Moving to Online Assessment!";
+    }
+    if (toStatus === 'Rejected') {
+      const messages = [
+        "Keep going! Every 'no' brings you closer to 'yes'!",
+        "Onward! The right opportunity is waiting for you!",
+        "Stay strong! Rejection is redirection!",
+        "Their loss! Something better is coming!",
+        "Keep pushing! Success loves persistence!",
+      ];
+      return messages[Math.floor(Math.random() * messages.length)];
+    }
+    return "Status updated!";
+  };
+
+  const handleStatusUpdate = (fromStatus, toStatus) => {
     loadApplications();
+    const message = getStatusMessage(fromStatus, toStatus);
+    showToast(message, toStatus === 'Rejected' ? 'success' : 'success');
+  };
+
+  const handleOfferDrop = (application, previousStatus) => {
+    setOfferModal({ application, previousStatus });
+  };
+
+  const handleOfferConfirm = async () => {
+    if (!offerModal) return;
+    
+    try {
+      const { updateApplicationStatus } = await import('../services/applicationService');
+      await updateApplicationStatus(offerModal.application.id, 'Offer');
+      setOfferModal(null);
+      setCelebrationModal({ companyName: offerModal.application.company });
+      await loadApplications();
+    } catch (error) {
+      showToast('Failed to update status', 'error');
+      setOfferModal(null);
+    }
+  };
+
+  const handleOfferCancel = async () => {
+    if (!offerModal) return;
+    
+    try {
+      const { updateApplicationStatus } = await import('../services/applicationService');
+      await updateApplicationStatus(offerModal.application.id, 'Offer');
+      setOfferModal(null);
+      showToast('Status updated to Offer');
+      await loadApplications();
+    } catch (error) {
+      showToast('Failed to update status', 'error');
+      setOfferModal(null);
+    }
+  };
+
+  const handleCelebrationClose = () => {
+    setCelebrationModal(null);
   };
 
   const clearAdvancedFilters = () => {
     setRoleFilter('');
     setMinSalary('');
     setMaxSalary('');
+    if (!searchQuery && !statusFilter && sortBy === 'newest') {
+      setViewMode('board');
+    }
   };
 
   const displayApplications = viewMode === 'board' && !statusFilter ? applications : filteredAndSortedApplications;
 
   return (
     <div className={styles.container}>
+      {toast && (
+        <Toast message={toast.message} type={toast.type} onClose={hideToast} />
+      )}
+      {offerModal && (
+        <OfferModal
+          companyName={offerModal.application.company}
+          onConfirm={handleOfferConfirm}
+          onCancel={handleOfferCancel}
+        />
+      )}
+      {celebrationModal && (
+        <CelebrationModal
+          companyName={celebrationModal.companyName}
+          onClose={handleCelebrationClose}
+        />
+      )}
       <header className={styles.header}>
-        <h1 className={styles.title}>ApplyRec</h1>
+        <div className={styles.headerLeft}>
+          <h1 className={styles.title}>ApplyRec</h1>
+          {applications.length > 0 && (
+            <span className={styles.appCount}>{applications.length} applications</span>
+          )}
+        </div>
         <div className={styles.headerActions}>
           <Button onClick={handleCreate} disabled={showForm}>
             Add Application
@@ -275,8 +392,20 @@ function Dashboard() {
               <div className={styles.loading}>Loading applications...</div>
             ) : displayApplications.length === 0 ? (
               <div className={styles.empty}>
-                <p>No applications found.</p>
-                <Button onClick={handleCreate}>Add Your First Application</Button>
+                {applications.length === 0 ? (
+                  <>
+                    <div className={styles.emptyIcon}>📋</div>
+                    <p className={styles.emptyTitle}>No applications yet</p>
+                    <p className={styles.emptyText}>Start tracking your job applications to stay organized</p>
+                    <Button onClick={handleCreate}>Add Your First Application</Button>
+                  </>
+                ) : (
+                  <>
+                    <div className={styles.emptyIcon}>🔍</div>
+                    <p className={styles.emptyTitle}>No results found</p>
+                    <p className={styles.emptyText}>Try adjusting your search or filters</p>
+                  </>
+                )}
               </div>
             ) : viewMode === 'board' && !statusFilter ? (
               <TrelloBoard
@@ -284,6 +413,7 @@ function Dashboard() {
                 onEdit={handleEdit}
                 onDelete={handleDelete}
                 onStatusUpdate={handleStatusUpdate}
+                onOfferDrop={handleOfferDrop}
               />
             ) : (
               <div className={styles.grid}>

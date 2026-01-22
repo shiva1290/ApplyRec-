@@ -120,12 +120,13 @@ function ApplicationForm({ application, onSubmit, onCancel, isLoading, existingR
       </div>
 
       <Input
-        label="Salary (Annual)"
+        label="Salary (LPA)"
         name="salary"
         type="number"
+        step="0.1"
         value={formData.salary}
         onChange={handleChange}
-        placeholder="e.g., 50000"
+        placeholder="e.g., 12, 14.5"
       />
 
       <Select

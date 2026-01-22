@@ -1,5 +1,7 @@
 .container {
   margin-bottom: 0;
+  position: relative;
+  display: inline-block;
 }
 
 .searchInput {
@@ -27,6 +29,31 @@
 
 .searchInput::placeholder {
   color: #52525b;
+}
+
+.clearButton {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #71717a;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.clearButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
 }
 
 @media (max-width: 768px) {

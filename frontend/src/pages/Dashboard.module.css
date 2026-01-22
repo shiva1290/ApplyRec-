@@ -43,6 +43,12 @@
   backdrop-filter: blur(10px);
 }
 
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
 .title {
   font-size: 24px;
   font-weight: 700;
@@ -52,6 +58,17 @@
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.appCount {
+  font-size: 13px;
+  font-weight: 500;
+  color: #71717a;
+  font-family: 'DM Sans', sans-serif;
+  padding: 6px 12px;
+  background: rgba(163, 230, 53, 0.1);
+  border-radius: 20px;
+  border: 1px solid rgba(163, 230, 53, 0.2);
 }
 
 .title::before {
@@ -158,6 +175,26 @@
   background: #16161f;
   border-radius: 20px;
   border: 1px solid #2a2a35;
+}
+
+.emptyIcon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.emptyTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+  font-family: 'DM Sans', sans-serif;
+  margin: 0 0 8px 0;
+}
+
+.emptyText {
+  font-size: 14px;
+  color: #71717a;
+  font-family: 'DM Sans', sans-serif;
+  margin: 0 0 24px 0;
 }
 
 .empty p {

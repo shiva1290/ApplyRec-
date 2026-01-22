@@ -14,7 +14,7 @@ async function createApplication(req, res) {
       notes || null,
       followUp || false,
       jobId || null,
-      salary ? parseInt(salary) : null
+      salary ? parseFloat(salary) : null
     );
 
     res.status(201).json({
@@ -80,7 +80,7 @@ async function updateApplication(req, res) {
       notes || null,
       followUp || false,
       jobId || null,
-      salary ? parseInt(salary) : null
+      salary ? parseFloat(salary) : null
     );
 
     res.json({ message: 'Application updated successfully' });

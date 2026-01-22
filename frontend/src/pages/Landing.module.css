@@ -352,6 +352,18 @@
   border: 1px solid #2a2a35;
 }
 
+.mockupItemLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mockupSalary {
+  font-size: 12px;
+  color: #a3e635;
+  font-family: 'DM Sans', sans-serif;
+}
+
 .mockupCompany {
   font-size: 14px;
   font-weight: 600;

@@ -11,13 +11,26 @@ function ApplicationCard({ application, onEdit, onDelete }) {
     return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
   };
 
+  const getRelativeTime = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffTime = now - date;
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 0) return 'Today';
+    if (diffDays === 1) return 'Yesterday';
+    if (diffDays < 7) return `${diffDays} days ago`;
+    if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+    if (diffDays < 365) return `${Math.floor(diffDays / 30)} months ago`;
+    return formatDate(dateString);
+  };
+
   const formatSalary = (salary) => {
     if (!salary) return null;
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      maximumFractionDigits: 0,
-    }).format(salary);
+    const num = parseFloat(salary);
+    const formatted = num % 1 === 0 ? num.toString() : num.toFixed(2).replace(/\.?0+$/, '');
+    return `${formatted} LPA`;
   };
 
   return (
@@ -34,13 +47,17 @@ function ApplicationCard({ application, onEdit, onDelete }) {
       <p className={styles.role}>{application.role}</p>
       
       {application.salary && (
-        <p className={styles.salary}>{formatSalary(application.salary)}/year</p>
+        <p className={styles.salary}>{formatSalary(application.salary)}</p>
       )}
       
       <div className={styles.dates}>
-        <p className={styles.date}>Applied: {formatDate(application.applied_date)}</p>
+        <p className={styles.date} title={formatDate(application.applied_date)}>
+          Applied {getRelativeTime(application.applied_date)}
+        </p>
         {application.status_updated_at && (
-          <p className={styles.dateSmall}>Status updated: {formatDate(application.status_updated_at)}</p>
+          <p className={styles.dateSmall} title={formatDate(application.status_updated_at)}>
+            Status updated {getRelativeTime(application.status_updated_at)}
+          </p>
         )}
       </div>
       
