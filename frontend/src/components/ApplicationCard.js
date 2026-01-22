@@ -6,8 +6,18 @@ function ApplicationCard({ application, onEdit, onDelete }) {
   const statusClass = styles[application.status.toLowerCase()] || styles.default;
 
   const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+  };
+
+  const formatSalary = (salary) => {
+    if (!salary) return null;
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      maximumFractionDigits: 0,
+    }).format(salary);
   };
 
   return (
@@ -16,18 +26,36 @@ function ApplicationCard({ application, onEdit, onDelete }) {
         <h3 className={styles.company}>{application.company}</h3>
         <span className={`${styles.status} ${statusClass}`}>{application.status}</span>
       </div>
+      
+      {application.job_id && (
+        <p className={styles.jobId}>ID: {application.job_id}</p>
+      )}
+      
       <p className={styles.role}>{application.role}</p>
-      <p className={styles.date}>Applied: {formatDate(application.applied_date)}</p>
+      
+      {application.salary && (
+        <p className={styles.salary}>{formatSalary(application.salary)}/year</p>
+      )}
+      
+      <div className={styles.dates}>
+        <p className={styles.date}>Applied: {formatDate(application.applied_date)}</p>
+        {application.status_updated_at && (
+          <p className={styles.dateSmall}>Status updated: {formatDate(application.status_updated_at)}</p>
+        )}
+      </div>
+      
       {application.notes && (
         <div className={styles.notes}>
           <p className={styles.notesText}>{application.notes}</p>
         </div>
       )}
+      
       {application.follow_up ? (
         <div className={styles.followUpBadge}>
           Follow Up Required
         </div>
       ) : null}
+      
       <div className={styles.actions}>
         <Button variant="secondary" onClick={() => onEdit(application)}>
           Edit

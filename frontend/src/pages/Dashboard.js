@@ -9,11 +9,13 @@ import Statistics from '../components/Statistics';
 import SearchBar from '../components/SearchBar';
 import SortOptions from '../components/SortOptions';
 import TrelloBoard from '../components/TrelloBoard';
+import AdvancedFilters from '../components/AdvancedFilters';
 import {
   getApplications,
   createApplication,
   updateApplication,
   deleteApplication,
+  getRoles,
 } from '../services/applicationService';
 import { logout } from '../services/authService';
 import { getAuthToken } from '../services/api';
@@ -21,7 +23,11 @@ import { getAuthToken } from '../services/api';
 function Dashboard() {
   const navigate = useNavigate();
   const [applications, setApplications] = useState([]);
+  const [existingRoles, setExistingRoles] = useState([]);
   const [statusFilter, setStatusFilter] = useState(null);
+  const [roleFilter, setRoleFilter] = useState('');
+  const [minSalary, setMinSalary] = useState('');
+  const [maxSalary, setMaxSalary] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('newest');
   const [viewMode, setViewMode] = useState('grid');
@@ -36,17 +42,37 @@ function Dashboard() {
       return;
     }
     loadApplications();
-  }, [navigate, statusFilter]);
+    loadRoles();
+  }, [navigate]);
+
+  useEffect(() => {
+    loadApplications();
+  }, [statusFilter, roleFilter, minSalary, maxSalary]);
 
   const loadApplications = async () => {
     try {
       setIsLoading(true);
-      const data = await getApplications(statusFilter);
+      const filters = {};
+      if (statusFilter) filters.status = statusFilter;
+      if (roleFilter) filters.role = roleFilter;
+      if (minSalary) filters.minSalary = minSalary;
+      if (maxSalary) filters.maxSalary = maxSalary;
+      
+      const data = await getApplications(filters);
       setApplications(data);
     } catch (err) {
       setError(err.message || 'Failed to load applications');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const loadRoles = async () => {
+    try {
+      const roles = await getRoles();
+      setExistingRoles(roles);
+    } catch (err) {
+      console.error('Failed to load roles');
     }
   };
 
@@ -71,6 +97,12 @@ function Dashboard() {
         break;
       case 'company-desc':
         filtered.sort((a, b) => b.company.localeCompare(a.company));
+        break;
+      case 'salary-high':
+        filtered.sort((a, b) => (b.salary || 0) - (a.salary || 0));
+        break;
+      case 'salary-low':
+        filtered.sort((a, b) => (a.salary || 0) - (b.salary || 0));
         break;
       default:
         break;
@@ -102,7 +134,9 @@ function Dashboard() {
           formData.status,
           formData.appliedDate,
           formData.notes || null,
-          formData.followUp || false
+          formData.followUp || false,
+          formData.jobId || null,
+          formData.salary ? parseInt(formData.salary) : null
         );
       } else {
         await createApplication(
@@ -111,13 +145,16 @@ function Dashboard() {
           formData.status,
           formData.appliedDate,
           formData.notes || null,
-          formData.followUp || false
+          formData.followUp || false,
+          formData.jobId || null,
+          formData.salary ? parseInt(formData.salary) : null
         );
       }
 
       setShowForm(false);
       setEditingApplication(null);
       await loadApplications();
+      await loadRoles();
     } catch (err) {
       setError(err.message || 'Failed to save application');
     } finally {
@@ -154,6 +191,12 @@ function Dashboard() {
     loadApplications();
   };
 
+  const clearAdvancedFilters = () => {
+    setRoleFilter('');
+    setMinSalary('');
+    setMaxSalary('');
+  };
+
   const displayApplications = viewMode === 'board' && !statusFilter ? applications : filteredAndSortedApplications;
 
   return (
@@ -181,6 +224,7 @@ function Dashboard() {
                 setEditingApplication(null);
               }}
               isLoading={isLoading}
+              existingRoles={existingRoles}
             />
           </div>
         ) : (
@@ -211,6 +255,17 @@ function Dashboard() {
                 )}
               </div>
             </div>
+
+            <AdvancedFilters
+              roles={existingRoles}
+              selectedRole={roleFilter}
+              onRoleChange={setRoleFilter}
+              minSalary={minSalary}
+              maxSalary={maxSalary}
+              onMinSalaryChange={setMinSalary}
+              onMaxSalaryChange={setMaxSalary}
+              onClear={clearAdvancedFilters}
+            />
 
             <FilterBar selectedStatus={statusFilter} onFilterChange={handleFilterChange} />
 

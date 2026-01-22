@@ -7,6 +7,7 @@ router.use(authenticateToken);
 
 router.post('/', applicationController.createApplication);
 router.get('/', applicationController.getApplications);
+router.get('/roles', applicationController.getRoles);
 router.get('/:id', applicationController.getApplication);
 router.put('/:id', applicationController.updateApplication);
 router.patch('/:id/status', applicationController.updateApplicationStatus);

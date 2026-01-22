@@ -12,7 +12,7 @@ const STATUS_OPTIONS = [
   { value: 'Offer', label: 'Offer' },
 ];
 
-function ApplicationForm({ application, onSubmit, onCancel, isLoading }) {
+function ApplicationForm({ application, onSubmit, onCancel, isLoading, existingRoles = [] }) {
   const [formData, setFormData] = useState({
     company: '',
     role: '',
@@ -20,7 +20,11 @@ function ApplicationForm({ application, onSubmit, onCancel, isLoading }) {
     appliedDate: '',
     notes: '',
     followUp: false,
+    jobId: '',
+    salary: '',
   });
+  const [showRoleSuggestions, setShowRoleSuggestions] = useState(false);
+  const [filteredRoles, setFilteredRoles] = useState([]);
 
   useEffect(() => {
     if (application) {
@@ -32,9 +36,23 @@ function ApplicationForm({ application, onSubmit, onCancel, isLoading }) {
         appliedDate: date,
         notes: application.notes || '',
         followUp: application.follow_up || false,
+        jobId: application.job_id || '',
+        salary: application.salary || '',
       });
     }
   }, [application]);
+
+  useEffect(() => {
+    if (formData.role && existingRoles.length > 0) {
+      const matches = existingRoles.filter(
+        (r) => r.toLowerCase().includes(formData.role.toLowerCase()) && r.toLowerCase() !== formData.role.toLowerCase()
+      );
+      setFilteredRoles(matches);
+      setShowRoleSuggestions(matches.length > 0);
+    } else {
+      setShowRoleSuggestions(false);
+    }
+  }, [formData.role, existingRoles]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -42,6 +60,11 @@ function ApplicationForm({ application, onSubmit, onCancel, isLoading }) {
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
     }));
+  };
+
+  const handleRoleSelect = (role) => {
+    setFormData((prev) => ({ ...prev, role }));
+    setShowRoleSuggestions(false);
   };
 
   const handleSubmit = (e) => {
@@ -56,6 +79,14 @@ function ApplicationForm({ application, onSubmit, onCancel, isLoading }) {
       </h2>
 
       <Input
+        label="Job ID"
+        name="jobId"
+        value={formData.jobId}
+        onChange={handleChange}
+        placeholder="e.g., JOB-12345"
+      />
+
+      <Input
         label="Company Name"
         name="company"
         value={formData.company}
@@ -63,12 +94,38 @@ function ApplicationForm({ application, onSubmit, onCancel, isLoading }) {
         required
       />
 
+      <div className={styles.roleContainer}>
+        <Input
+          label="Role"
+          name="role"
+          value={formData.role}
+          onChange={handleChange}
+          required
+          autoComplete="off"
+        />
+        {showRoleSuggestions && (
+          <div className={styles.suggestions}>
+            {filteredRoles.slice(0, 5).map((role) => (
+              <button
+                type="button"
+                key={role}
+                className={styles.suggestionItem}
+                onClick={() => handleRoleSelect(role)}
+              >
+                {role}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
       <Input
-        label="Role"
-        name="role"
-        value={formData.role}
+        label="Salary (Annual)"
+        name="salary"
+        type="number"
+        value={formData.salary}
         onChange={handleChange}
-        required
+        placeholder="e.g., 50000"
       />
 
       <Select

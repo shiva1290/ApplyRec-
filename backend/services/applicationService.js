@@ -18,7 +18,7 @@ function validateApplicationData(company, role, status, appliedDate) {
   return true;
 }
 
-async function createApplication(userId, company, role, status, appliedDate, notes = null, followUp = false) {
+async function createApplication(userId, company, role, status, appliedDate, notes, followUp, jobId, salary) {
   validateApplicationData(company, role, status, appliedDate);
   const applicationId = await applicationModel.createApplication(
     userId,
@@ -27,16 +27,18 @@ async function createApplication(userId, company, role, status, appliedDate, not
     status,
     appliedDate,
     notes,
-    followUp
+    followUp,
+    jobId,
+    salary
   );
   return applicationId;
 }
 
-async function getApplications(userId, statusFilter) {
-  if (statusFilter && !validateStatus(statusFilter)) {
+async function getApplications(userId, filters = {}) {
+  if (filters.status && !validateStatus(filters.status)) {
     throw new Error('Invalid status filter');
   }
-  return await applicationModel.getApplicationsByUserId(userId, statusFilter);
+  return await applicationModel.getApplicationsByUserId(userId, filters);
 }
 
 async function getApplication(id, userId) {
@@ -47,7 +49,7 @@ async function getApplication(id, userId) {
   return application;
 }
 
-async function updateApplication(id, userId, company, role, status, appliedDate, notes = null, followUp = false) {
+async function updateApplication(id, userId, company, role, status, appliedDate, notes, followUp, jobId, salary) {
   validateApplicationData(company, role, status, appliedDate);
   
   const application = await applicationModel.getApplicationById(id, userId);
@@ -63,7 +65,9 @@ async function updateApplication(id, userId, company, role, status, appliedDate,
     status,
     appliedDate,
     notes,
-    followUp
+    followUp,
+    jobId,
+    salary
   );
 
   if (!success) {
@@ -105,6 +109,10 @@ async function deleteApplication(id, userId) {
   return true;
 }
 
+async function getUniqueRoles(userId) {
+  return await applicationModel.getUniqueRoles(userId);
+}
+
 module.exports = {
   createApplication,
   getApplications,
@@ -112,5 +120,6 @@ module.exports = {
   updateApplication,
   updateApplicationStatus,
   deleteApplication,
+  getUniqueRoles,
   validateStatus
 };

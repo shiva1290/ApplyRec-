@@ -2,7 +2,7 @@ const applicationService = require('../services/applicationService');
 
 async function createApplication(req, res) {
   try {
-    const { company, role, status, appliedDate, notes, followUp } = req.body;
+    const { company, role, status, appliedDate, notes, followUp, jobId, salary } = req.body;
     const userId = req.userId;
 
     const applicationId = await applicationService.createApplication(
@@ -12,7 +12,9 @@ async function createApplication(req, res) {
       status,
       appliedDate,
       notes || null,
-      followUp || false
+      followUp || false,
+      jobId || null,
+      salary ? parseInt(salary) : null
     );
 
     res.status(201).json({
@@ -30,9 +32,14 @@ async function createApplication(req, res) {
 async function getApplications(req, res) {
   try {
     const userId = req.userId;
-    const statusFilter = req.query.status || null;
+    const filters = {
+      status: req.query.status || null,
+      role: req.query.role || null,
+      minSalary: req.query.minSalary ? parseInt(req.query.minSalary) : null,
+      maxSalary: req.query.maxSalary ? parseInt(req.query.maxSalary) : null
+    };
 
-    const applications = await applicationService.getApplications(userId, statusFilter);
+    const applications = await applicationService.getApplications(userId, filters);
     res.json({ applications });
   } catch (error) {
     if (error.message === 'Invalid status filter') {
@@ -60,7 +67,7 @@ async function getApplication(req, res) {
 async function updateApplication(req, res) {
   try {
     const { id } = req.params;
-    const { company, role, status, appliedDate, notes, followUp } = req.body;
+    const { company, role, status, appliedDate, notes, followUp, jobId, salary } = req.body;
     const userId = req.userId;
 
     await applicationService.updateApplication(
@@ -71,7 +78,9 @@ async function updateApplication(req, res) {
       status,
       appliedDate,
       notes || null,
-      followUp || false
+      followUp || false,
+      jobId || null,
+      salary ? parseInt(salary) : null
     );
 
     res.json({ message: 'Application updated successfully' });
@@ -121,11 +130,22 @@ async function deleteApplication(req, res) {
   }
 }
 
+async function getRoles(req, res) {
+  try {
+    const userId = req.userId;
+    const roles = await applicationService.getUniqueRoles(userId);
+    res.json({ roles });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
 module.exports = {
   createApplication,
   getApplications,
   getApplication,
   updateApplication,
   updateApplicationStatus,
-  deleteApplication
+  deleteApplication,
+  getRoles
 };

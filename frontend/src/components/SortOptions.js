@@ -6,6 +6,8 @@ const SORT_OPTIONS = [
   { value: 'oldest', label: 'Oldest First' },
   { value: 'company-asc', label: 'Company A-Z' },
   { value: 'company-desc', label: 'Company Z-A' },
+  { value: 'salary-high', label: 'Salary: High to Low' },
+  { value: 'salary-low', label: 'Salary: Low to High' },
 ];
 
 function SortOptions({ sortBy, onSortChange }) {
